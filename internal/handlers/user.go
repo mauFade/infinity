@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/mauFade/infinity/internal/config"
 	"github.com/mauFade/infinity/internal/repositories"
 	"github.com/mauFade/infinity/internal/usecase/user"
 )
@@ -19,7 +20,7 @@ func CreateUserHandler(c *fiber.Ctx) error {
 		return err
 	}
 
-	uc := user.NewCreateUserUseCase(repositories.NewUserRepository(GlobalDatabase))
+	uc := user.NewCreateUserUseCase(repositories.NewUserRepository(config.Database.DataBase))
 
 	uc.Execute(&user.CreateUserInput{
 		Name:       payload.Name,
