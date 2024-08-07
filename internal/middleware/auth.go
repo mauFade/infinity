@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/gofiber/fiber/v2"
@@ -11,8 +10,6 @@ import (
 func EnsureAuthenticated() fiber.Handler {
 	return func(ctx *fiber.Ctx) error {
 		authorization := ctx.Get("Authorization")
-
-		log.Println(authorization)
 
 		if len(authorization) < 8 {
 			return ctx.Status(http.StatusUnauthorized).JSON(fiber.Map{"error": "Missing authentication token"})
