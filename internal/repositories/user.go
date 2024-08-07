@@ -34,3 +34,15 @@ func (r *UserRepository) FindByEmail(email string) *models.User {
 
 	return user
 }
+
+func (r *UserRepository) FindByPhone(phone string) *models.User {
+	var user *models.User
+
+	result := r.db.Where("phone = ?", phone).First(&user)
+
+	if result.RowsAffected == 0 {
+		return nil
+	}
+
+	return user
+}

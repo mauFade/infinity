@@ -7,14 +7,16 @@ import (
 	"github.com/mauFade/infinity/internal/usecase/user"
 )
 
+type Request struct {
+	Name       string `json:"name"`
+	Email      string `json:"email"`
+	Phone      string `json:"phone"`
+	Password   string `json:"password"`
+	Profession string `json:"profession"`
+}
+
 func CreateUserHandler(c *fiber.Ctx) error {
-	payload := struct {
-		Name       string `json:"name"`
-		Email      string `json:"email"`
-		Phone      string `json:"phone"`
-		Password   string `json:"password"`
-		Profession string `json:"profession"`
-	}{}
+	payload := Request{}
 
 	if err := c.BodyParser(&payload); err != nil {
 		return err
@@ -22,7 +24,7 @@ func CreateUserHandler(c *fiber.Ctx) error {
 
 	uc := user.NewCreateUserUseCase(repositories.NewUserRepository(config.Database.DataBase))
 
-	uc.Execute(&user.CreateUserInput{
+	output, err := uc.Execute(&user.CreateUserInput{
 		Name:       payload.Name,
 		Email:      payload.Email,
 		Phone:      payload.Phone,
@@ -30,5 +32,12 @@ func CreateUserHandler(c *fiber.Ctx) error {
 		Profession: payload.Profession,
 	})
 
-	return c.JSON(payload)
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": err.Error(),
+			"status":  fiber.StatusBadRequest,
+		})
+	}
+
+	return c.Status(fiber.StatusCreated).JSON(output)
 }
