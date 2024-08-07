@@ -5,7 +5,8 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/mauFade/infinity/internal/handlers"
+	userHandlers "github.com/mauFade/infinity/internal/handlers/user"
+	"github.com/mauFade/infinity/internal/middleware"
 )
 
 func SetupRoutes(app *fiber.App) {
@@ -16,7 +17,14 @@ func SetupRoutes(app *fiber.App) {
 
 	v1 := app.Group("/v1")
 
-	users := v1.Group("/users")
+	{
+		users := v1.Group("/users")
 
-	users.Post("/", handlers.CreateUserHandler)
+		users.Post("/", userHandlers.CreateUserHandler)
+
+		users.Post("/auth", userHandlers.AuthenticateHandler)
+
+		users.Use(middleware.EnsureAuthenticated())
+	}
+
 }

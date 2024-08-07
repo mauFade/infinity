@@ -3,9 +3,12 @@ module github.com/mauFade/infinity
 go 1.20
 
 require (
+	github.com/MicahParks/keyfunc/v2 v2.1.0 // indirect
 	github.com/andybalholm/brotli v1.0.5 // indirect
+	github.com/gofiber/contrib/jwt v1.0.10 // indirect
 	github.com/gofiber/fiber/v2 v2.52.5 // indirect
 	github.com/gofiber/utils v0.0.10 // indirect
+	github.com/golang-jwt/jwt/v5 v5.2.1 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/schema v1.1.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
