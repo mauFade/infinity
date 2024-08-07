@@ -25,6 +25,8 @@ func SetupRoutes(app *fiber.App) {
 		users.Post("/auth", userHandlers.AuthenticateHandler)
 
 		users.Use(middleware.EnsureAuthenticated())
+
+		users.Get("/", userHandlers.GetUserProfileHandler)
 	}
 
 }

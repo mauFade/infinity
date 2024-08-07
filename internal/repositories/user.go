@@ -23,6 +23,18 @@ func (r *UserRepository) Update(user *models.User) {
 	r.db.Save(&user)
 }
 
+func (r *UserRepository) FindByID(id string) *models.User {
+	var user *models.User
+
+	result := r.db.Where("id = ?", id).First(&user)
+
+	if result.RowsAffected == 0 {
+		return nil
+	}
+
+	return user
+}
+
 func (r *UserRepository) FindByEmail(email string) *models.User {
 	var user *models.User
 
