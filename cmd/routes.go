@@ -27,6 +27,8 @@ func SetupRoutes(app *fiber.App) {
 		users.Use(middleware.EnsureAuthenticated())
 
 		users.Get("/", userHandlers.GetUserProfileHandler)
+
+		users.Post("/address", userHandlers.CreateAddressHandler)
 	}
 
 }

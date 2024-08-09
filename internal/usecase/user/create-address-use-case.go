@@ -1,7 +1,10 @@
 package user
 
 import (
+	"errors"
+
 	"github.com/google/uuid"
+	"github.com/mauFade/infinity/internal/models"
 	"github.com/mauFade/infinity/internal/repositories"
 )
 
@@ -40,7 +43,42 @@ func NewCreateAddressUseCase(r *repositories.AddressRepository, u *repositories.
 	}
 }
 
-func (u *CreateAddressUseCase) Execute() (*CreateAddressOutput, error) {
+func (u *CreateAddressUseCase) Execute(data *CreateAddressInput) (*CreateAddressOutput, error) {
+	user := u.userRepository.FindByID(data.UserID)
 
-	return &CreateAddressOutput{}, nil
+	if user == nil {
+		return nil, errors.New("user not found with this id")
+	}
+
+	addr := u.addrRepository.FindByUserID(data.UserID)
+
+	if addr != nil {
+		return nil, errors.New("user already has an address")
+	}
+
+	addr = models.NewAddress(
+		uuid.New(),
+		user.ID,
+		data.Country,
+		data.ZipCode,
+		data.Street,
+		data.Number,
+		data.Neighbourhood,
+		data.City,
+		data.Estate,
+	)
+
+	u.addrRepository.Create(*addr)
+
+	return &CreateAddressOutput{
+		ID:            addr.ID,
+		UserID:        addr.UserID,
+		Country:       addr.Country,
+		ZipCode:       addr.ZipCode,
+		Street:        addr.Street,
+		Number:        addr.Number,
+		Neighbourhood: addr.Neighbourhood,
+		City:          addr.City,
+		Estate:        addr.Estate,
+	}, nil
 }
