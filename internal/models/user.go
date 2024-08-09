@@ -68,6 +68,30 @@ func NewUser(
 	}
 }
 
+func NewAddress(
+	id,
+	userID uuid.UUID,
+	country,
+	zipCode,
+	street,
+	number,
+	neighbourhood,
+	city,
+	estate string,
+) *Address {
+	return &Address{
+		ID:            id,
+		UserID:        userID,
+		Country:       country,
+		ZipCode:       zipCode,
+		Street:        street,
+		Number:        number,
+		Neighbourhood: neighbourhood,
+		City:          city,
+		Estate:        estate,
+	}
+}
+
 func (u *User) ComparePasswords(password string) error {
 	if err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(password)); err != nil {
 		return err
