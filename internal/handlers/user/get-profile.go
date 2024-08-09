@@ -17,7 +17,10 @@ func GetUserProfileHandler(c *fiber.Ctx) error {
 		})
 	}
 
-	uc := user.NewGetUserProfileUseCase(repositories.NewUserRepository(config.Database.DataBase))
+	uc := user.NewGetUserProfileUseCase(
+		repositories.NewUserRepository(config.Database.DataBase),
+		repositories.NewAddressRepository(config.Database.DataBase),
+	)
 
 	data, err := uc.Execute(&user.GetUserProfileInput{
 		UserId: id,

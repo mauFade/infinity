@@ -38,7 +38,8 @@ func CreateAddressHandler(c *fiber.Ctx) error {
 
 	uc := user.NewCreateAddressUseCase(
 		repositories.NewAddressRepository(config.Database.DataBase),
-		repositories.NewUserRepository(config.Database.DataBase))
+		repositories.NewUserRepository(config.Database.DataBase),
+	)
 
 	data, err := uc.Execute(
 		&user.CreateAddressInput{
